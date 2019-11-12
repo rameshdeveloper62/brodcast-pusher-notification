@@ -1,4 +1,4 @@
-* laravel pusher brodacast notification *
+*Laravel pusher brodacast notification*
 
 (1) first of all we should create table for store notification
 	-php artisan notifications:table

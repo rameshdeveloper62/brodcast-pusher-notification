@@ -1,7 +1,8 @@
-- laravel pusher brodacast notification
+* laravel pusher brodacast notification *
+
 (1) first of all we should create table for store notification
-	php artisan notifications:table
-	php artisan migrate
+	-php artisan notifications:table
+	-php artisan migrate
 	
 (2)	You meed to install * composer require pusher/pusher-php-server * for laravel(server)
 	and include pusher.js for javascript(client)
@@ -9,14 +10,14 @@
 
 (3) we creates sendMessage notification class
 	App\Notifications\SendMessage.php
-	-> php artisan make:notification SendMessage
-	-> we used datatable type of notification 
+	- php artisan make:notification SendMessage
+	- we used datatable type of notification 
 
 	    public function via($notifiable)
 	    {
 	        return ['database'];
 	    }
-	-> toArray() method for store data in notification table
+	- toArray() method for store data in notification table
 	
 	    public function toArray($notifiable)
 	    {
@@ -32,9 +33,9 @@
 (6) we can display current login user notification by $user->notifications.
 	if we want to display only read,unread,all but we can able to display all type of notification
 
-	-> read and unread = $user->notifications
-	-> unread = $user->unreadNotifications
-	-> Marking Notifications As Read
+	- read and unread = $user->notifications
+	- unread = $user->unreadNotifications
+	- Marking Notifications As Read
 
 		$user = App\User::find(1);
 
@@ -47,7 +48,7 @@
 		// mark as read by update method
 		$user->unreadNotifications()->update(['read_at' => now()]);
 
-	-> delete notification
+	- delete notification
 		$user->notifications()->delete();
 (7) we can change in config/app.php file for enable brodcast service provider
 	uncomment this line :  App\Providers\BroadcastServiceProvider::class,
@@ -69,7 +70,7 @@
 	{
 	//define channel name
 
-		public function broadcastOn()
+	    public function broadcastOn()
 	    {
 	        return ['my-channel'];
 	    }
@@ -105,21 +106,16 @@
       }
 
 
+*We define in routes/channel.php* 
 
-Private channel: it is authenticate user can access this channel.
-
-Present channel :  it is private by default private.
-
-public channel : all user access this channel publically.
-
-for use private channel:
+ -Private channel: it is authenticate user can access this channel.
 we have to define the authentication logic. The first one checks if the current user is logged in. Only logged in users can listen in on the updates channel.
-
+```
 Broadcast::channel('updates', function ($user) {
     return auth()->check();
 });
-
-for present channel: 
+```
+- Present channel :  it is private by default private.
 The second checks to see if the user can listen on the online presence channel. Unlike the first, the presence channel does not return a boolean. It returns details of the user if the user is authorized.
 
 ```
@@ -129,3 +125,5 @@ Broadcast::channel('online', function ($user) {
     }
 });
 ```
+- public channel : all user access this channel publically.
+nothing to do for public channel

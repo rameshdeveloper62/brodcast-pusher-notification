@@ -1,3 +1,4 @@
+- laravel pusher brodacast notification
 (1) first of all we should create table for store notification
 	php artisan notifications:table
 	php artisan migrate
@@ -11,11 +12,12 @@
 	-> php artisan make:notification SendMessage
 	-> we used datatable type of notification 
 
-		public function via($notifiable)
+	    public function via($notifiable)
 	    {
 	        return ['database'];
 	    }
 	-> toArray() method for store data in notification table
+	
 	    public function toArray($notifiable)
 	    {
 	        return $this->message;
@@ -120,8 +122,10 @@ Broadcast::channel('updates', function ($user) {
 for present channel: 
 The second checks to see if the user can listen on the online presence channel. Unlike the first, the presence channel does not return a boolean. It returns details of the user if the user is authorized.
 
+```
 Broadcast::channel('online', function ($user) {
     if (auth()->check()) {
         return $user->toArray();
     }
 });
+```
